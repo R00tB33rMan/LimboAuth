@@ -725,14 +725,12 @@ public class LimboAuth {
       response = tryAuthentication(nickname, Settings.IMP.MAIN.ISPREMIUM_AUTH_URL);
     } catch (Exception e) {
 
-      LOGGER.warn("Failed to authenticate with primary URL. Trying backup...", e);
+      LOGGER.warn("Failed to authenticate with primary URL.", e);
       try {
         // Si l'URL principale échoue, essayez avec l'URL de secours
         response = tryAuthentication(nickname, Settings.IMP.MAIN.ISPREMIUM_AUTH_URL_BACKUP);
       } catch (Exception e1) {
-
-        LOGGER.error("Unable to authenticate with both primary and backup URLs.", e1);
-        return new PremiumResponse(PremiumState.ERROR);
+        return isPremiumInternal(nickname);
       }
     }
 
